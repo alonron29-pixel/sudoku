@@ -1,0 +1,7 @@
+C:\omega\sudoku_project\sudoku\sudoku_solver\sudoku_solver\obj\Debug\sudoku_solver.csproj.AssemblyReference.cache
+C:\omega\sudoku_project\sudoku\sudoku_solver\sudoku_solver\obj\Debug\sudoku_solver.csproj.CoreCompileInputs.cache
+C:\omega\sudoku_project\sudoku\sudoku_solver\sudoku_solver\bin\Debug\sudoku_solver.exe.config
+C:\omega\sudoku_project\sudoku\sudoku_solver\sudoku_solver\bin\Debug\sudoku_solver.exe
+C:\omega\sudoku_project\sudoku\sudoku_solver\sudoku_solver\bin\Debug\sudoku_solver.pdb
+C:\omega\sudoku_project\sudoku\sudoku_solver\sudoku_solver\obj\Debug\sudoku_solver.exe
+C:\omega\sudoku_project\sudoku\sudoku_solver\sudoku_solver\obj\Debug\sudoku_solver.pdb
