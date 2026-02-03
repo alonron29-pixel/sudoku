@@ -23,7 +23,7 @@ public class Board
 
     private int _boxRows;
     private int _boxCols;
-    private int _fullMask;
+    private long _fullMask;
 
     private int[] _workStack;
     private int _workPtr = 0;
@@ -45,11 +45,13 @@ public class Board
     /// </summary>
     public void Print()
     {
+        string dashes = new string('-', 2 * (Size + _boxRows) - 1);
+
         for (int row = 0; row < Size; row++)
         {
             if (row % _boxRows == 0)
             {
-                Console.WriteLine(" |-----------------------|");
+                Console.WriteLine($" |{dashes}|");
             }
 
             for (int col = 0; col < Size; col++)
@@ -63,7 +65,7 @@ public class Board
             }
             Console.WriteLine(" |");
         }
-        Console.WriteLine(" |-----------------------|");
+        Console.WriteLine($" |{dashes}|");
     }
 
     /// <summary>
@@ -71,13 +73,14 @@ public class Board
     /// </summary>
     public void InitialPropagation()
     {
-        int currentCellBitVal, currentCellIndex, currentCellValue, offset, currentNeighborIndex;
+        long currentCellBitVal;
+        int currentCellIndex, currentCellValue, offset, currentNeighborIndex;
 
         while (_workPtr >= 0)
         {
             currentCellIndex = _workStack[_workPtr--];
             currentCellValue = Cells[currentCellIndex].Value;
-            currentCellBitVal = 1 << (currentCellValue - 1);
+            currentCellBitVal = 1L << (currentCellValue - 1);
             offset = NeighborOffsets[currentCellIndex];
 
             for (int i = 0; i < NeighborsPerCell; i++)
@@ -182,9 +185,14 @@ public class Board
             _boxRows = int.Parse(Console.ReadLine());
             Console.Write("Enter number of colums per rectangle: ");
             _boxCols = int.Parse(Console.ReadLine());
+
+            if (_boxRows * _boxCols != Size)
+            {
+                throw new InvalidBoardDimensions(InvalidBoardDimensions.InvalidRowColSize);
+            }
         }
 
-        _fullMask = (1 << Size) - 1;
+        _fullMask = (1L << Size) - 1;
 
         // calc: Size - 1 + Size - 1 + Size - (BoxRows + BoxCols - 1)
         NeighborsPerCell = (Size * 3) - _boxRows - _boxCols - 1;

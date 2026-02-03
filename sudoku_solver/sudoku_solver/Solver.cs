@@ -39,7 +39,7 @@ public class Solver
     /// <summary>
     /// Converts a single-bit bitmask into its corresponding Sudoku integer value
     /// </summary>
-    public static int BitmaskToValue(int bitmask)
+    public static int BitmaskToValue(long bitmask)
     {
         int count = 0;
         while (bitmask > 0)
@@ -75,7 +75,7 @@ public class Solver
         for (int val = 1; val <= _board.Size; val++)
         {
             // Create a bitmask for the current value 
-            int valBit = 1 << (val - 1);
+            long valBit = 1L << (val - 1);
             // Check if the current value is a candidate for this cell
             if ((currentCell.CandidatesMask & valBit) != 0)
             {
@@ -97,21 +97,21 @@ public class Solver
         return false; //no option is valid, backtrack to previous call
     }
 
-    // <summary>
-    /// Heuristic function that selects the most constrained cell (MRV - Minimum Remaining Values). 
-    /// If counts are tied, it uses the degree heuristic (most empty neighbors) as a tie-breaker.
+    /// <summary>
+    /// Selects the most constrained cell using the Minimum Remaining Values (MRV) heuristic.
+    /// This method scans the board for an empty cell with the smallest number of candidates.
     /// </summary>
     private int FindBestCellIndex()
     {
         int bestCellIndex = FullBoardFlag;
-        int leastCandidates = _board.Size;
+        int leastCandidates = _board.Size + 1;
         int mostEmptyNeighbors = 0;
 
         Cell currentCell;
         int neighborIndex;
         int currentEmptyNeighbors;
         int offset;
-        
+
         for (int i = 0; i < _board.TotalCells; i++)
         {
             currentCell = _board.Cells[i];
@@ -151,14 +151,15 @@ public class Solver
     /// </summary>
     private bool TryValue(int startCellIndex)
     {
-        int currentCellBitVal, currentCellIndex, currentCellValue, offset, currentNeighborIndex, workPtr = 0;
+        long currentCellBitVal;
+        int currentCellIndex, currentCellValue, offset, currentNeighborIndex, workPtr = 0;
         _workStack[workPtr] = startCellIndex;
 
         while (workPtr >= 0)
         {
             currentCellIndex = _workStack[workPtr--];
             currentCellValue = _board.Cells[currentCellIndex].Value;
-            currentCellBitVal = 1 << (currentCellValue - 1);
+            currentCellBitVal = 1L << (currentCellValue - 1);
             offset = _board.NeighborOffsets[currentCellIndex];
 
             for (int i = 0; i < _board.NeighborsPerCell; i++)
