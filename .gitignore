@@ -1,0 +1,26 @@
+## Visual Studio Build Outputs
+bin/
+obj/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+
+## Visual Studio Tracking Files
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+## JetBrains Rider
+.idea/
+
+## Test Results
+TestResults/
+*.trx
+*.vstest
+
+## OS generated files
+.DS_Store
+Thumbs.db
