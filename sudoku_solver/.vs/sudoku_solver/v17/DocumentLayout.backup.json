@@ -1,0 +1,139 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\omega\\sudoku_project\\sudoku\\sudoku_solver\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{1B9BFD25-6C8B-4F6D-85B4-EC1DCDA9913B}|sudoku_solver\\sudoku_solver.csproj|C:\\omega\\sudoku_project\\sudoku\\sudoku_solver\\sudoku_solver\\board.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1B9BFD25-6C8B-4F6D-85B4-EC1DCDA9913B}|sudoku_solver\\sudoku_solver.csproj|solutionrelative:sudoku_solver\\board.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{53772608-3147-4CF1-96A2-A00F37CFD910}|Sudoku.Tests\\Sudoku.Tests.csproj|c:\\omega\\sudoku_project\\sudoku\\sudoku_solver\\sudoku.tests\\unittest1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{53772608-3147-4CF1-96A2-A00F37CFD910}|Sudoku.Tests\\Sudoku.Tests.csproj|solutionrelative:sudoku.tests\\unittest1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1B9BFD25-6C8B-4F6D-85B4-EC1DCDA9913B}|sudoku_solver\\sudoku_solver.csproj|C:\\omega\\sudoku_project\\sudoku\\sudoku_solver\\sudoku_solver\\exceptions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1B9BFD25-6C8B-4F6D-85B4-EC1DCDA9913B}|sudoku_solver\\sudoku_solver.csproj|solutionrelative:sudoku_solver\\exceptions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1B9BFD25-6C8B-4F6D-85B4-EC1DCDA9913B}|sudoku_solver\\sudoku_solver.csproj|c:\\omega\\sudoku_project\\sudoku\\sudoku_solver\\sudoku_solver\\solver.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1B9BFD25-6C8B-4F6D-85B4-EC1DCDA9913B}|sudoku_solver\\sudoku_solver.csproj|solutionrelative:sudoku_solver\\solver.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1B9BFD25-6C8B-4F6D-85B4-EC1DCDA9913B}|sudoku_solver\\sudoku_solver.csproj|C:\\omega\\sudoku_project\\sudoku\\sudoku_solver\\sudoku_solver\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1B9BFD25-6C8B-4F6D-85B4-EC1DCDA9913B}|sudoku_solver\\sudoku_solver.csproj|solutionrelative:sudoku_solver\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1B9BFD25-6C8B-4F6D-85B4-EC1DCDA9913B}|sudoku_solver\\sudoku_solver.csproj|C:\\omega\\sudoku_project\\sudoku\\sudoku_solver\\sudoku_solver\\cell.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1B9BFD25-6C8B-4F6D-85B4-EC1DCDA9913B}|sudoku_solver\\sudoku_solver.csproj|solutionrelative:sudoku_solver\\cell.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1B9BFD25-6C8B-4F6D-85B4-EC1DCDA9913B}|sudoku_solver\\sudoku_solver.csproj|C:\\omega\\sudoku_project\\sudoku\\sudoku_solver\\sudoku_solver\\undostep.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1B9BFD25-6C8B-4F6D-85B4-EC1DCDA9913B}|sudoku_solver\\sudoku_solver.csproj|solutionrelative:sudoku_solver\\undostep.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 6,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "UnitTest1.cs",
+              "DocumentMoniker": "C:\\omega\\sudoku_project\\sudoku\\sudoku_solver\\Sudoku.Tests\\UnitTest1.cs",
+              "RelativeDocumentMoniker": "Sudoku.Tests\\UnitTest1.cs",
+              "ToolTip": "C:\\omega\\sudoku_project\\sudoku\\sudoku_solver\\Sudoku.Tests\\UnitTest1.cs",
+              "RelativeToolTip": "Sudoku.Tests\\UnitTest1.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAkAAABLAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-01T22:23:01.96Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Exceptions.cs",
+              "DocumentMoniker": "C:\\omega\\sudoku_project\\sudoku\\sudoku_solver\\sudoku_solver\\Exceptions.cs",
+              "RelativeDocumentMoniker": "sudoku_solver\\Exceptions.cs",
+              "ToolTip": "C:\\omega\\sudoku_project\\sudoku\\sudoku_solver\\sudoku_solver\\Exceptions.cs",
+              "RelativeToolTip": "sudoku_solver\\Exceptions.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAvAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-28T12:33:26.444Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "UndoStep.cs",
+              "DocumentMoniker": "C:\\omega\\sudoku_project\\sudoku\\sudoku_solver\\sudoku_solver\\UndoStep.cs",
+              "RelativeDocumentMoniker": "sudoku_solver\\UndoStep.cs",
+              "ToolTip": "C:\\omega\\sudoku_project\\sudoku\\sudoku_solver\\sudoku_solver\\UndoStep.cs",
+              "RelativeToolTip": "sudoku_solver\\UndoStep.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAkAAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-11T18:43:16.229Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Solver.cs",
+              "DocumentMoniker": "C:\\omega\\sudoku_project\\sudoku\\sudoku_solver\\sudoku_solver\\Solver.cs",
+              "RelativeDocumentMoniker": "sudoku_solver\\Solver.cs",
+              "ToolTip": "C:\\omega\\sudoku_project\\sudoku\\sudoku_solver\\sudoku_solver\\Solver.cs",
+              "RelativeToolTip": "sudoku_solver\\Solver.cs",
+              "ViewState": "AgIAAAsAAAAAAAAAAAAAwA8AAAAXAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-11T18:35:23.575Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Cell.cs",
+              "DocumentMoniker": "C:\\omega\\sudoku_project\\sudoku\\sudoku_solver\\sudoku_solver\\Cell.cs",
+              "RelativeDocumentMoniker": "sudoku_solver\\Cell.cs",
+              "ToolTip": "C:\\omega\\sudoku_project\\sudoku\\sudoku_solver\\sudoku_solver\\Cell.cs",
+              "RelativeToolTip": "sudoku_solver\\Cell.cs",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAAwAgAAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-06T22:14:19.364Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\omega\\sudoku_project\\sudoku\\sudoku_solver\\sudoku_solver\\Program.cs",
+              "RelativeDocumentMoniker": "sudoku_solver\\Program.cs",
+              "ToolTip": "C:\\omega\\sudoku_project\\sudoku\\sudoku_solver\\sudoku_solver\\Program.cs",
+              "RelativeToolTip": "sudoku_solver\\Program.cs",
+              "ViewState": "AgIAAA0AAAAAAAAAAAAQwDcAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-05T12:50:06.363Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Board.cs",
+              "DocumentMoniker": "C:\\omega\\sudoku_project\\sudoku\\sudoku_solver\\sudoku_solver\\Board.cs",
+              "RelativeDocumentMoniker": "sudoku_solver\\Board.cs",
+              "ToolTip": "C:\\omega\\sudoku_project\\sudoku\\sudoku_solver\\sudoku_solver\\Board.cs*",
+              "RelativeToolTip": "sudoku_solver\\Board.cs*",
+              "ViewState": "AgIAADkAAAAAAAAAAAAUwE4AAAA1AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-06T22:14:38.976Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

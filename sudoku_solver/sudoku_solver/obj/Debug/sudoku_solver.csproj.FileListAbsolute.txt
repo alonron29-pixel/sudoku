@@ -5,3 +5,13 @@ C:\omega\sudoku_project\sudoku\sudoku_solver\sudoku_solver\bin\Debug\sudoku_solv
 C:\omega\sudoku_project\sudoku\sudoku_solver\sudoku_solver\bin\Debug\sudoku_solver.pdb
 C:\omega\sudoku_project\sudoku\sudoku_solver\sudoku_solver\obj\Debug\sudoku_solver.exe
 C:\omega\sudoku_project\sudoku\sudoku_solver\sudoku_solver\obj\Debug\sudoku_solver.pdb
+C:\omega\sudoku_project\sudoku\sudoku_solver\sudoku_solver\obj\Debug\sudoku_solver.exe.config
+C:\omega\sudoku_project\sudoku\sudoku_solver\sudoku_solver\bin\Debug\xunit.abstractions.dll
+C:\omega\sudoku_project\sudoku\sudoku_solver\sudoku_solver\bin\Debug\xunit.assert.dll
+C:\omega\sudoku_project\sudoku\sudoku_solver\sudoku_solver\bin\Debug\xunit.core.dll
+C:\omega\sudoku_project\sudoku\sudoku_solver\sudoku_solver\bin\Debug\xunit.execution.desktop.dll
+C:\omega\sudoku_project\sudoku\sudoku_solver\sudoku_solver\bin\Debug\xunit.abstractions.xml
+C:\omega\sudoku_project\sudoku\sudoku_solver\sudoku_solver\bin\Debug\xunit.assert.xml
+C:\omega\sudoku_project\sudoku\sudoku_solver\sudoku_solver\bin\Debug\xunit.core.xml
+C:\omega\sudoku_project\sudoku\sudoku_solver\sudoku_solver\bin\Debug\xunit.execution.desktop.xml
+C:\omega\sudoku_project\sudoku\sudoku_solver\sudoku_solver\obj\Debug\sudoku_s.D5C1E68D.Up2Date

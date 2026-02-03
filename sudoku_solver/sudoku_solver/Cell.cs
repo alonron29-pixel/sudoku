@@ -1,13 +1,20 @@
-﻿public struct Cell
+﻿public class Cell
 {
-    public int Value;
-    public int CandidatesMask;
-    public int CandidatesCount;
+    public int Value { get; set; }
+    public int CandidatesMask { get; set; } // bits representing the options of the value for this cell
+    public int CandidatesCount { get; set; }  // number of on bits
 
-    public Cell(int mask, int count)
+    public const int EmptyCellValue = 0;
+
+    public Cell(int value, int mask=0, int count=0)
     {
-        Value = 0;
+        Value = value;
         CandidatesMask = mask;
         CandidatesCount = count;
+    }
+    public void RemoveCandidate(int candidateMask)
+    {
+        CandidatesMask &= ~candidateMask;
+        CandidatesCount--;
     }
 }
