@@ -116,7 +116,7 @@ public class Board
     /// This allows the engine to work with integers while the UI displays characters.
     /// </summary>
     /// <exception cref="InvalidBoardDimensions">Thrown when the symbols string is too short for the board size.</exception>
-    public void InitializeDictionaries()
+    private void InitializeDictionaries()
     {
         CharToValue = new Dictionary<char, int>();
         ValueToChar = new Dictionary<int, char>();
@@ -142,6 +142,122 @@ public class Board
         if (currentValue <= Size)
         {
             throw new InvalidBoardDimensions(InvalidBoardDimensions.BoardTooBig(Size));
+        }
+    }
+	
+	/// <summary>
+    /// Populates the board cells with initial values from the input string 
+    /// and pre-calculates neighbor indices for efficient lookup.
+    /// </summary>
+    /// <param name="boardString">The string representing the initial Sudoku state.</param>
+    private void BuildNeighborsAndInitCells(string boardString)
+    {
+        int neighborPointer = 0;
+
+        for (int i = 0; i < TotalCells; i++)
+        {
+            int cellValue = GetValueFromChar(boardString[i]);
+
+            // Add fixed cells to the work stack for initial propagation
+            if (cellValue != Cell.EmptyCellValue)
+            {
+                _workStack[_workPtr++] = i;
+            }
+
+            Cells[i] = new Cell(cellValue, _fullMask, Size);
+            
+            // Map neighbors into the continuous AllNeighbors array
+            NeighborOffsets[i] = neighborPointer;
+            neighborPointer = MapNeighborsToFlatArray(i, neighborPointer);
+        }
+
+        // Adjust pointer after the final increment
+        _workPtr--;
+    }
+
+    /// <summary>
+    /// Validates a character from the board string and returns its internal integer value.
+    /// </summary>
+    private int GetValueFromChar(char symbol)
+    {
+        if (!CharToValue.ContainsKey(symbol))
+        {
+            throw new InvalidCharacter(InvalidCharacter.InvalidCharMsg(symbol));
+        }
+        return CharToValue[symbol];
+    }
+
+    /// <summary>
+    /// Calculates neighbors for a cell and copies them into the flat AllNeighbors array.
+    /// </summary>
+    /// <param name="cellIndex">The index of the cell being processed.</param>
+    /// <param name="pointer">The current insertion index in AllNeighbors.</param>
+    /// <returns>The updated pointer index after insertion.</returns>
+    private int MapNeighborsToFlatArray(int cellIndex, int pointer)
+    {
+        HashSet<int> neighborsSet = GetNeighborsForCell(cellIndex);
+
+        foreach (int neighborIndex in neighborsSet)
+        {
+            AllNeighbors[pointer++] = neighborIndex;
+        }
+
+        return pointer;
+    }
+	
+	/// <summary>
+    /// Returns a unique set of indices for all cells sharing a row, column, or box with the target cell.
+    /// </summary>
+    private HashSet<int> GetNeighborsForCell(int cellIndex)
+    {
+        HashSet<int> neighbors = new HashSet<int>();
+        int row = cellIndex / Size;
+        int col = cellIndex % Size;
+
+        AddRowNeighbors(neighbors, row);
+        AddColumnNeighbors(neighbors, col);
+        AddBoxNeighbors(neighbors, row, col);
+
+        // A cell is not its own neighbor
+        neighbors.Remove(cellIndex);
+
+        return neighbors;
+    }
+
+    /// <summary>
+    /// Collects all cell indices belonging to the specified row.
+    /// </summary>
+    private void AddRowNeighbors(HashSet<int> neighbors, int row)
+    {
+        int rowStart = row * Size;
+        for (int c = 0; c < Size; c++)
+            neighbors.Add(rowStart + c);
+    }
+
+    /// <summary>
+    /// Collects all cell indices belonging to the specified column.
+    /// </summary>
+    private void AddColumnNeighbors(HashSet<int> neighbors, int col)
+    {
+        for (int r = 0; r < Size; r++)
+            neighbors.Add(r * Size + col);
+    }
+
+    /// <summary>
+    /// Collects all cell indices belonging to the specific rectangular sub-grid (box).
+    /// </summary>
+    private void AddBoxNeighbors(HashSet<int> neighbors, int row, int col)
+    {
+        // Integer division trick to find the start of the block
+        int boxStartRow = (row / _boxRows) * _boxRows;
+        int boxStartCol = (col / _boxCols) * _boxCols;
+
+        for (int r = boxStartRow; r < boxStartRow + _boxRows; r++)
+        {
+            for (int c = boxStartCol; c < boxStartCol + _boxCols; c++)
+            {
+                neighbors.Add(r * Size + c);
+            }
         }
     }
 }
