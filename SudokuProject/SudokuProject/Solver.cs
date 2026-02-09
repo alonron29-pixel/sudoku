@@ -96,4 +96,52 @@ public class Solver
     
         return false; //no option is valid, backtrack to previous call
     }
+	
+	/// <summary>
+    /// Selects the most constrained cell using the Minimum Remaining Values (MRV) heuristic.
+    /// This method scans the board for an empty cell with the smallest number of candidates.
+    /// </summary>
+    private int FindBestCellIndex()
+    {
+        int bestCellIndex = FullBoardFlag;
+        int leastCandidates = _board.Size + 1;
+        int mostEmptyNeighbors = 0;
+
+        Cell currentCell;
+        int neighborIndex;
+        int currentEmptyNeighbors;
+        int offset;
+
+        for (int i = 0; i < _board.TotalCells; i++)
+        {
+            currentCell = _board.Cells[i];
+            if (currentCell.Value == Cell.EmptyCellValue && currentCell.CandidatesCount <= leastCandidates)
+            {
+                currentEmptyNeighbors = 0;
+                for (int j = 0; j < _board.NeighborsPerCell; j++)
+                {
+                    offset = _board.NeighborOffsets[i];
+                    neighborIndex = _board.AllNeighbors[offset + j];
+                    if (_board.Cells[neighborIndex].Value == Cell.EmptyCellValue)
+                    {
+                        currentEmptyNeighbors++;
+                    }
+                }
+
+                if (currentCell.CandidatesCount == leastCandidates)
+                {
+                    if (currentEmptyNeighbors < mostEmptyNeighbors)
+                    {
+                        continue;
+                    }
+                }
+
+                bestCellIndex = i;
+                leastCandidates = currentCell.CandidatesCount;
+                mostEmptyNeighbors = currentEmptyNeighbors;
+            }
+        }
+
+        return bestCellIndex;
+    }
 }
