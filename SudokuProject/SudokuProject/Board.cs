@@ -36,6 +36,56 @@ public class Board
     }
 	
 	/// <summary>
+    /// Propagates constraints from fixed cells to narrow down candidates and solve "Naked Singles."
+    /// Uses a work stack to recursively process cells that become solved during propagation.
+    /// </summary>
+    /// <exception cref="UnsolvableBoard">Thrown if a conflict is detected or a cell runs out of candidates.</exception>
+    public void InitialPropagation()
+    {
+        while (_workPtr >= 0)
+        {
+            int currentCellIndex = _workStack[_workPtr--];
+            int currentCellValue = Cells[currentCellIndex].Value;
+            long currentCellBitmask = 1L << (currentCellValue - 1);
+            int offset = NeighborOffsets[currentCellIndex];
+
+            for (int i = 0; i < NeighborsPerCell; i++)
+            {
+                int neighborIndex = AllNeighbors[offset + i];
+                ref Cell neighbor = ref Cells[neighborIndex];
+
+                // Case 1: The neighbor cell is empty
+                if (neighbor.Value == Cell.EmptyCellValue)
+                {
+                    // If the current value is still a candidate in the neighbor cell
+                    if ((neighbor.CandidatesMask & currentCellBitmask) != 0)
+                    {
+                        // If this was the last possible candidate, the board is unsolvable
+                        if (neighbor.CandidatesCount == 1)
+                        {
+                            throw new UnsolvableBoard();
+                        }
+
+                        neighbor.RemoveCandidate(currentCellBitmask);
+
+                        // If exactly one candidate remains, we found a "Naked Single"
+                        if (neighbor.CandidatesCount == 1)
+                        {
+                            neighbor.Value = Solver.BitmaskToValue(neighbor.CandidatesMask);
+                            _workStack[++_workPtr] = neighborIndex;
+                        }
+                    }
+                }
+                // Case 2: The neighbor already contains the same value (Conflict)
+                else if (neighbor.Value == currentCellValue)
+                {
+                    throw new UnsolvableBoard();
+                }
+            }
+        }
+    }
+	
+	/// <summary>
     /// Orchestrates the initialization of board dimensions, resource allocation, and input validation.
     /// </summary>
     /// <param name="boardString">A string representation of the initial board state.</param>
