@@ -10,3 +10,4 @@
         CellIdx = cellIdx;
         RemovedBit = removedBit;
     }
+}
