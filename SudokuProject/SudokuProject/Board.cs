@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 public class Board
 {
-    // --- Properties ---
     public int Size { get; private set; }
     public int TotalCells { get; private set; } 
     public int[] AllNeighbors { get; private set; }
@@ -13,7 +12,6 @@ public class Board
     public Dictionary<char, int> CharToValue { get; private set; }
     public Dictionary<int, char> ValueToChar { get; private set; }
 
-    // --- Private Fields ---
     private int _boxRows;
     private int _boxCols;
     private long _fullMask;
@@ -22,7 +20,6 @@ public class Board
     private const char EmptyCellChar = '0';
     private readonly string _symbols = "123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
-    // --- Constructor ---
     public Board(string boardString)
     {
         InitializeDimensions(boardString);
