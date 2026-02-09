@@ -36,6 +36,43 @@ public class Board
     }
 	
 	/// <summary>
+    /// Renders the current state of the Sudoku board to the console with grid formatting.
+    /// </summary>
+    public void Print()
+    {
+        // Calculate the width of the horizontal divider based on board size and sub-grids
+        string dashes = new string('-', 2 * (Size + _boxRows) - 1);
+
+        for (int row = 0; row < Size; row++)
+        {
+            // Print horizontal divider at the start of each sub-grid row
+            if (row % _boxRows == 0)
+            {
+                Console.WriteLine($" |{dashes}|");
+            }
+
+            for (int col = 0; col < Size; col++)
+            {
+                // Print vertical divider at the start of each sub-grid column
+                if (col % _boxCols == 0)
+                {
+                    Console.Write(" |");
+                }
+
+                // Retrieve the character representation of the cell value
+                int cellValue = Cells[row * Size + col].Value;
+                Console.Write($" {ValueToChar[cellValue]}");
+            }
+
+            // End of row vertical border
+            Console.WriteLine(" |");
+        }
+
+        // Final bottom border
+        Console.WriteLine($" |{dashes}|");
+    }
+	
+	/// <summary>
     /// Propagates constraints from fixed cells to narrow down candidates and solve "Naked Singles."
     /// Uses a work stack to recursively process cells that become solved during propagation.
     /// </summary>
