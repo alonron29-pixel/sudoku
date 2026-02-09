@@ -144,4 +144,89 @@ public class Solver
 
         return bestCellIndex;
     }
+	
+	/// <summary>
+    /// Attempts to assign a value to a cell and immediately propagates the constraints 
+    /// to all affected neighbors to prune the search tree.
+    /// </summary>
+    private bool TryValue(int startCellIndex)
+    {
+        long currentCellBitVal;
+        int currentCellIndex, currentCellValue, offset, currentNeighborIndex, workPtr = 0;
+        _workStack[workPtr] = startCellIndex;
+
+        while (workPtr >= 0)
+        {
+            currentCellIndex = _workStack[workPtr--];
+            currentCellValue = _board.Cells[currentCellIndex].Value;
+            currentCellBitVal = 1L << (currentCellValue - 1);
+            offset = _board.NeighborOffsets[currentCellIndex];
+
+            for (int i = 0; i < _board.NeighborsPerCell; i++)
+            {
+                currentNeighborIndex = _board.AllNeighbors[offset + i];
+                ref Cell neighbor = ref _board.Cells[currentNeighborIndex];
+
+                // if the neighbore cell is empty
+                if (neighbor.Value == Cell.EmptyCellValue)
+                {
+                    // if the candidate bit is on in the neighbore cell
+                    if ((neighbor.CandidatesMask & currentCellBitVal) != 0)
+                    {
+                        // if the only candidate of the neighbore cell is the checked value 
+                        if (neighbor.CandidatesCount == 1)
+                        {
+                            return false;
+                        }
+
+                        // save neighbor candidate
+                        _undoStack[_undoPtr++] = new UndoStep(currentNeighborIndex, currentCellBitVal);
+
+                        neighbor.RemoveCandidate(currentCellBitVal);
+                        
+                        // if one candidate left after removal(naked single)
+                        if (neighbor.CandidatesCount == 1)
+                        {
+                            neighbor.Value = BitmaskToValue(neighbor.CandidatesMask);
+                            _undoStack[_undoPtr++] = new UndoStep(currentNeighborIndex, UndoStep.ValueAssignmentFlag);
+                            _workStack[++workPtr] = currentNeighborIndex;
+                        }
+                    }
+                }
+
+                // if the neighbore cell contain the checked value
+                else if (neighbor.Value == currentCellValue)
+                {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    /// <summary>
+    /// Reverts all board changes (value assignments and candidate removals) made 
+    /// since a specific point in the search process.
+    /// </summary>
+    private void Undo(int snapshot)
+    {
+        while (_undoPtr > snapshot)
+        {
+            _undoPtr--;
+            UndoStep step = _undoStack[_undoPtr];
+            ref Cell currentCell = ref _board.Cells[step.CellIdx];
+            
+            if (step.RemovedBit == UndoStep.ValueAssignmentFlag)
+            {
+                currentCell.Value = Cell.EmptyCellValue;
+            }
+
+            else
+            {
+                currentCell.CandidatesMask |= step.RemovedBit;
+                currentCell.CandidatesCount++;
+            }
+        }
+    }
 }
