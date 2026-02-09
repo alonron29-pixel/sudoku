@@ -110,4 +110,38 @@ public class Board
         NeighborOffsets = new int[TotalCells];
         _workStack = new int[TotalCells];
     }
+	
+	/// <summary>
+    /// Maps the game's character symbols to internal integer values and vice-versa.
+    /// This allows the engine to work with integers while the UI displays characters.
+    /// </summary>
+    /// <exception cref="InvalidBoardDimensions">Thrown when the symbols string is too short for the board size.</exception>
+    public void InitializeDictionaries()
+    {
+        CharToValue = new Dictionary<char, int>();
+        ValueToChar = new Dictionary<int, char>();
+
+        // Map the designated empty cell character to the internal empty value
+        CharToValue[EmptyCellChar] = Cell.EmptyCellValue;
+        ValueToChar[Cell.EmptyCellValue] = EmptyCellChar;
+
+        int currentValue = 1;
+
+        // Iterate through symbols and map them to sequential integer values
+        for (int i = 0; i < _symbols.Length && currentValue <= Size; i++)
+        {
+            char symbol = _symbols[i];
+
+            CharToValue[symbol] = currentValue;
+            ValueToChar[currentValue] = symbol;
+
+            currentValue++;
+        }
+
+        // Validate that we have enough symbols to represent all possible values in this board size
+        if (currentValue <= Size)
+        {
+            throw new InvalidBoardDimensions(InvalidBoardDimensions.BoardTooBig(Size));
+        }
+    }
 }
