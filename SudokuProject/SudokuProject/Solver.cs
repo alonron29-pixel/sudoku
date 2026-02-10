@@ -1,5 +1,6 @@
 using System;
 using System.Security.Cryptography;
+using System.Diagnostics;
 
 public class Solver
 {
@@ -10,6 +11,10 @@ public class Solver
     private int _undoPtr = 0;
 
     private const short FullBoardFlag = -1;
+
+    private readonly Stopwatch _timer = new Stopwatch();
+    private long _maxMilliseconds;
+    private double msPerCell = 50.0;
 
     public Solver(Board board)
     {
@@ -23,7 +28,7 @@ public class Solver
         // worst-case scenario where every candidate removal is tracked during propagation.
         _undoStack = new UndoStep[board.TotalCells * board.Size];
 
-        _undoPtr = 0;
+        _maxMilliseconds = (long)(_board.TotalCells * msPerCell);
     }
 	
 	/// <summary>
@@ -32,6 +37,7 @@ public class Solver
     /// </summary>
     public bool Solve()
     {
+        _timer.Restart();
         _board.InitialPropagation();
         return Backtrack();
     }
@@ -56,6 +62,12 @@ public class Solver
     /// </summary>
     private bool Backtrack()
     {
+        if (_timer.ElapsedMilliseconds > _maxMilliseconds)
+        {
+            _timer.Stop();
+            throw new TimeoutException($"Solver timed out after {_timer.ElapsedMilliseconds}ms (Limit for size {_board.Size}x{_board.Size} is {_maxMilliseconds}ms).");
+        }
+
         for (int i = 0; i < _board.TotalCells; i++)
         {
             if (_board.Cells[i].Value == Cell.EmptyCellValue && _board.Cells[i].CandidatesCount == 0)

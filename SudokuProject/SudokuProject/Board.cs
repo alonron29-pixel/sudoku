@@ -79,7 +79,7 @@ public class Board
                     {
                         if (neighbor.CandidatesCount == 1)
                         {
-                            throw new UnsolvableBoard();
+                            throw new UnsolvableBoardException();
                         }
 
                         neighbor.RemoveCandidate(currentCellBitmask);
@@ -93,7 +93,7 @@ public class Board
                 }
                 else if (neighbor.Value == currentCellValue)
                 {
-                    throw new UnsolvableBoard();
+                    throw new UnsolvableBoardException();
                 }
             }
         }
@@ -110,7 +110,7 @@ public class Board
     {
         if (string.IsNullOrEmpty(boardString))
         {
-            throw new InvalidBoardDimensions(InvalidBoardDimensions.EmptyStringMsg);
+            throw new InvalidBoardDimensionsException(InvalidBoardDimensionsException.EmptyStringMsg);
         }
 
         TotalCells = boardString.Length;
@@ -118,7 +118,7 @@ public class Board
 
         if (Size * Size != TotalCells)
         {
-            throw new InvalidBoardDimensions(InvalidBoardDimensions.InvalidDimensionsMsg);
+            throw new InvalidBoardDimensionsException(InvalidBoardDimensionsException.InvalidDimensionsMsg);
         }
     }
 
@@ -139,7 +139,7 @@ public class Board
 
             if (_boxRows * _boxCols != Size)
             {
-                throw new InvalidBoardDimensions(InvalidBoardDimensions.InvalidRowColSize);
+                throw new InvalidBoardDimensionsException(InvalidBoardDimensionsException.InvalidRowColSize);
             }
         }
 
@@ -174,7 +174,7 @@ public class Board
 
         if (currentValue <= Size)
         {
-            throw new InvalidBoardDimensions(InvalidBoardDimensions.BoardTooBig(Size));
+            throw new InvalidBoardDimensionsException(InvalidBoardDimensionsException.BoardTooBig(Size));
         }
     }
 
@@ -200,7 +200,7 @@ public class Board
     {
         if (!CharToValue.ContainsKey(symbol))
         {
-            throw new InvalidCharacter(InvalidCharacter.InvalidCharMsg(symbol));
+            throw new InvalidCharacterException(InvalidCharacterException.InvalidCharMsg(symbol));
         }
         return CharToValue[symbol];
     }

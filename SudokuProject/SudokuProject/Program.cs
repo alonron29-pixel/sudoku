@@ -24,7 +24,6 @@ namespace sudoku_solver
                     Console.WriteLine("Initial board:");
                     board.Print();
 
-                    // If board creation succeeded, try to solve it
                     Solver solver = new Solver(board);
 
                     Stopwatch sw = new Stopwatch(); // Create Timer
@@ -44,21 +43,27 @@ namespace sudoku_solver
                     else
                     {
                         // Throw exception if solver fails
-                        throw new UnsolvableBoard();
+                        throw new UnsolvableBoardException();
                     }
                 }
-                catch (InvalidBoardDimensions ex)
+                catch (InvalidBoardDimensionsException ex)
                 {
                     Console.WriteLine(ex.Message);
                 }
-                catch (InvalidCharacter ex)
+                catch (InvalidCharacterException ex)
                 {
                     Console.WriteLine(ex.Message);
                 }
-                catch (UnsolvableBoard ex)
+                catch (UnsolvableBoardException ex)
                 {
                     Console.WriteLine(ex.Message);
                 }
+
+                catch (TimeoutException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
