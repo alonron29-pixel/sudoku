@@ -1,5 +1,8 @@
 ﻿using System;
 using Xunit;
+using Logic;
+using Exceprions;
+using UI;
 
 public class SolverTests
 {
@@ -60,9 +63,9 @@ public class SolverTests
     [Trait("Category", "SolverLogic")]
     public void Constructor_ValidBoard_ShouldInitializeStacksWithoutError()
     {
-        var board = new Board(Valid4x4);
+        Board board = SudokuEngine.HandleNewBoard(Valid4x4);
 
-        var solver = new Solver(board);
+        Solver solver = new Solver(board);
 
         // If constructor runs without exception, test passes.
         // This validates memory allocation for _workStack and _undoStack.
@@ -75,8 +78,8 @@ public class SolverTests
     [Trait("Category", "SolverLogic")]
     public void Solve_ValidPuzzle_ShouldReturnTrueAndFillBoard()
     {
-        var board = new Board(Valid4x4);
-        var solver = new Solver(board);
+        Board board = SudokuEngine.HandleNewBoard(Valid4x4);
+        Solver solver = new Solver(board);
 
         bool success = solver.Solve();
 
@@ -100,8 +103,8 @@ public class SolverTests
 
         // A fully solved 4x4 grid
         string solvedStr = "1234341221434321";
-        var board = new Board(solvedStr);
-        var solver = new Solver(board);
+        Board board = SudokuEngine.HandleNewBoard(solvedStr);
+        Solver solver = new Solver(board);
 
         bool success = solver.Solve();
 
@@ -116,15 +119,15 @@ public class SolverTests
         // InitialPropagation might throw 'UnsolvableBoard'.
         // If it doesn't throw, Backtrack must return false.
 
-        var board = new Board(Invalid4x4);
-        var solver = new Solver(board);
+        Board board = SudokuEngine.HandleNewBoard(Invalid4x4);
+        Solver solver = new Solver(board);
 
         try
         {
             bool result = solver.Solve();
             Assert.False(result, "Solver should return false for unsolvable configuration.");
         }
-        catch (UnsolvableBoard)
+        catch (UnsolvableBoardException)
         {
             // If InitialPropagation catches it early, this is also a valid pass.
             Assert.True(true);
@@ -139,8 +142,8 @@ public class SolverTests
         // This tests the recursion and stack limits.
 
         string empty25X25 = new string('0', 625);
-        var board = new Board(empty25X25);
-        var solver = new Solver(board);
+        Board board = SudokuEngine.HandleNewBoard(empty25X25);
+        Solver solver = new Solver(board);
 
         bool success = solver.Solve();
 
@@ -168,8 +171,8 @@ public class SolverTests
 
         // This specific string requires the solver to try a value, propagate it, fail, undo, and try another.
         string tricky4x4 = "0034341221434321";
-        var board = new Board(tricky4x4);
-        var solver = new Solver(board);
+        Board board = SudokuEngine.HandleNewBoard(tricky4x4);
+        Solver solver = new Solver(board);
 
         bool success = solver.Solve();
 

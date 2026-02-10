@@ -43,12 +43,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Board.cs" />
-    <Compile Include="Cell.cs" />
-    <Compile Include="Exceptions.cs" />
-    <Compile Include="Program.cs" />
-    <Compile Include="Solver.cs" />
-    <Compile Include="UndoStep.cs" />
+    <Compile Include="Logic\Board.cs" />
+    <Compile Include="Logic\Cell.cs" />
+    <Compile Include="Exceptions\Exceptions.cs" />
+    <Compile Include="UI\Program.cs" />
+    <Compile Include="Logic\Solver.cs" />
+    <Compile Include="UI\SudokuEngine.cs" />
+    <Compile Include="Logic\UndoStep.cs" />
+    <Compile Include="Validation\BoardValidator.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

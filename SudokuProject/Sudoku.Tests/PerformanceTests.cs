@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq; 
 using Xunit;
+using Logic;
+using UI;
 
 public class SudokuPerformanceTests
 {
@@ -39,8 +41,8 @@ public class SudokuPerformanceTests
     [Trait("Category", "Performance")] // Assigns a 'Performance' label to this test so I can use a filter in the Test Explorer.
     public void SolveAndMeasure(string boardString, double limit)
     {
-        var board = new Board(boardString);
-        var solver = new Solver(board);
+        Board board = SudokuEngine.HandleNewBoard(boardString);
+        Solver solver = new Solver(board);
 
         var sw = Stopwatch.StartNew();
         bool solved = solver.Solve();
