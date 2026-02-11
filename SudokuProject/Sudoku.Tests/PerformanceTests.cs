@@ -1,18 +1,30 @@
+using Logic;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq; 
-using Xunit;
-using Logic;
 using UI;
+using Xunit;
+using Xunit.Abstractions;
 
 public class SudokuPerformanceTests
 {
     private const string DataFolder = "TestsData";
     private const string DataFileName = "50k_9X9_Puzzles.txt";
+    private const string LogFile = "Sudoku_Performance_Result.txt";
     private const double SecondsTimeout = 1.0;
     private const int NumberOfPuzzlesToSolve = 10000;
+
+    private static double _totalTime = 0;
+    private static int _solvedCount = 0;
+    private static readonly object _lock = new object(); // Object to prevent two test to update _solvedCount or _totalTine at the same time
+    private readonly ITestOutputHelper _output;
+
+    public SudokuPerformanceTests(ITestOutputHelper output)
+    {
+        _output = output;
+    }
 
     public static IEnumerable<object[]> GetTestData()
     {
@@ -48,8 +60,33 @@ public class SudokuPerformanceTests
         bool solved = solver.Solve();
         sw.Stop();
 
+        double currentSolveTime = sw.Elapsed.TotalSeconds;
+
+        // Safe update of static vars
+        lock (_lock)
+        {
+            _totalTime += currentSolveTime;
+            _solvedCount++;
+
+            // Write result to log file after last solve
+            if (_solvedCount == NumberOfPuzzlesToSolve)
+            {
+                double avg = _totalTime / _solvedCount;
+                string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop); // get path to desktop
+                string filePath = Path.Combine(desktopPath, LogFile); // add the file name to the path
+
+                string summary = $"--- Performance Report ---\n" +
+                                 $"Total Puzzles: {_solvedCount}\n" +
+                                 $"Total Time: {_totalTime:F4} seconds\n" +
+                                 $"Average Time: {avg:F6} seconds\n" +
+                                 $"---------------------------";
+
+                File.WriteAllText(filePath, summary);
+            }
+        }
+
         Assert.True(solved, $"Failed to solve: {boardString}");
-        Assert.True(sw.Elapsed.TotalSeconds < limit,
-            $"Board took {sw.Elapsed.TotalSeconds:F4}s which exceeds limit of {limit}s");
+        Assert.True(currentSolveTime < limit,
+            $"Board took {currentSolveTime:F4}s which exceeds limit of {limit}s");
     }
 }
