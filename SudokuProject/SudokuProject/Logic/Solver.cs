@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Diagnostics;
 
 namespace Logic
@@ -12,10 +12,14 @@ namespace Logic
         private int _undoPtr = 0;
 
         private const short FullBoardFlag = -1;
+        private const short ZeroCandidatesCellFlag = -2;
 
         private readonly Stopwatch _timer = new Stopwatch();
         private long _maxMilliseconds;
         private double msPerCell = 50.0;
+
+        private int _mrvThreshold; // Min number of fixed cells to activate MRV (FindBestCellIndex)
+        private const double MrvActivationPercent = 0.05;
 
         public Solver(Board board)
         {
@@ -39,6 +43,9 @@ namespace Logic
         public bool Solve()
         {
             _timer.Restart();
+
+            _mrvThreshold = (int)(_board.TotalCells * MrvActivationPercent);
+
             _board.InitialPropagation();
             return Backtrack();
         }
@@ -69,18 +76,24 @@ namespace Logic
                 throw new TimeoutException($"Solver timed out after {_timer.ElapsedMilliseconds}ms (Limit for size {_board.Size}x{_board.Size} is {_maxMilliseconds}ms).");
             }
 
-            for (int i = 0; i < _board.TotalCells; i++)
+            // Board is full
+            if (_board.FixedCellCount == _board.TotalCells)
             {
-                if (_board.Cells[i].Value == Cell.EmptyCellValue && _board.Cells[i].CandidatesCount == 0)
-                    return false;
+                return true; 
             }
 
-            int cellIndex = FindBestCellIndex();
-
-            if (cellIndex == FullBoardFlag)
+            int cellIndex;
+            if (_board.FixedCellCount >= _mrvThreshold)
             {
-                return true;
+                cellIndex = FindBestCellIndex(); // MRV Logic
             }
+            else
+            {
+                cellIndex = FindFirstEmptyCell(); // Simple Scan Logic
+            }
+
+            if (cellIndex == ZeroCandidatesCellFlag) 
+                return false;
 
             int snapshot = _undoPtr;
 
@@ -94,6 +107,7 @@ namespace Logic
                 {
                     currentCell.Value = val;
                     _undoStack[_undoPtr++] = new UndoStep(cellIndex, UndoStep.ValueAssignmentFlag);
+                    _board.FixedCellCount++;
 
                     if (TryValue(cellIndex))
                     {
@@ -111,47 +125,80 @@ namespace Logic
         }
 
         /// <summary>
-        /// Selects the most constrained cell using the Minimum Remaining Values (MRV) heuristic.
-        /// This method scans the board for an empty cell with the smallest number of candidates.
+        /// Finds the first available empty cell in the board using a simple linear scan.
+        /// This is a lightweight alternative to MRV, typically used during the early stages 
+        /// of the solving process to save computation time.
+        /// </summary>
+        private int FindFirstEmptyCell()
+        {
+            for (int i = 0; i < _board.TotalCells; i++)
+            {
+                if (_board.Cells[i].Value == Cell.EmptyCellValue)
+                {
+                    if (_board.Cells[i].CandidatesCount == 0) 
+                        return ZeroCandidatesCellFlag;
+                    return i;
+                }
+            }
+            return FullBoardFlag;
+        }
+
+        
+        /// <summary>
+        /// Selects the next cell to branch on using the Minimum Remaining Values (MRV) heuristic, 
+        /// with a Degree Heuristic (most empty neighbors) as a tie-breaker.
         /// </summary>
         private int FindBestCellIndex()
         {
             int bestCellIndex = FullBoardFlag;
             int leastCandidates = _board.Size + 1;
-            int mostEmptyNeighbors = 0;
-
-            Cell currentCell;
-            int neighborIndex;
-            int currentEmptyNeighbors;
-            int offset;
+            int mostEmptyNeighbors = -1;
 
             for (int i = 0; i < _board.TotalCells; i++)
             {
-                currentCell = _board.Cells[i];
-                if (currentCell.Value == Cell.EmptyCellValue && currentCell.CandidatesCount <= leastCandidates)
+                // Use 'ref' to avoid copying the Cell struct, improving performance during high-frequency scans
+                ref Cell currentCell = ref _board.Cells[i];
+
+                // Skip cells that are already assigned a value
+                if (currentCell.Value != Cell.EmptyCellValue) 
+                    continue;
+
+                int candidatesCount = currentCell.CandidatesCount;
+
+                // If an empty cell has no valid candidates, this branch is dead
+                if (candidatesCount == 0) 
+                    return ZeroCandidatesCellFlag;
+
+                // Naked Single Shortcut: A cell with only 1 candidate is the most constrained possible.
+                // Selecting it immediately minimizes branching without needing expensive tie-breaker logic.
+                if (candidatesCount == 1) return i;
+
+                // Filter cells with the minimum number of candidates
+                if (candidatesCount <= leastCandidates)
                 {
-                    currentEmptyNeighbors = 0;
+                    // Tie-breaker: Degree Heuristic. Count how many neighbors are also empty.
+                    // This prioritizes cells that, once filled, will most restrict their surroundings.
+                    int currentEmptyNeighbors = 0;
+                    int offset = _board.NeighborOffsets[i];
+
                     for (int j = 0; j < _board.NeighborsPerCell; j++)
                     {
-                        offset = _board.NeighborOffsets[i];
-                        neighborIndex = _board.AllNeighbors[offset + j];
+                        int neighborIndex = _board.AllNeighbors[offset + j];
                         if (_board.Cells[neighborIndex].Value == Cell.EmptyCellValue)
                         {
                             currentEmptyNeighbors++;
                         }
                     }
 
-                    if (currentCell.CandidatesCount == leastCandidates)
+                    // Update best choice if:
+                    // We found a cell with fewer candidates than before.
+                    // We found a cell with the same candidates count but more empty neighbors.
+                    if (candidatesCount < leastCandidates || currentEmptyNeighbors > mostEmptyNeighbors)
                     {
-                        if (currentEmptyNeighbors < mostEmptyNeighbors)
-                        {
-                            continue;
-                        }
+                        leastCandidates = candidatesCount;
+                        mostEmptyNeighbors = currentEmptyNeighbors;
+                        bestCellIndex = i;
                     }
-
-                    bestCellIndex = i;
-                    leastCandidates = currentCell.CandidatesCount;
-                    mostEmptyNeighbors = currentEmptyNeighbors;
                 }
             }
 
@@ -203,6 +250,7 @@ namespace Logic
                                 neighbor.Value = BitmaskToValue(neighbor.CandidatesMask);
                                 _undoStack[_undoPtr++] = new UndoStep(currentNeighborIndex, UndoStep.ValueAssignmentFlag);
                                 _workStack[++workPtr] = currentNeighborIndex;
+                                _board.FixedCellCount++;
                             }
                         }
                     }
@@ -233,6 +281,7 @@ namespace Logic
                 if (step.RemovedBit == UndoStep.ValueAssignmentFlag)
                 {
                     currentCell.Value = Cell.EmptyCellValue;
+                    _board.FixedCellCount--;
                 }
 
                 else

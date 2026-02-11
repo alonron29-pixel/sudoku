@@ -13,6 +13,7 @@ namespace Logic
         public int[] NeighborOffsets { get; private set; }
         public int NeighborsPerCell { get; private set; }
         public Cell[] Cells { get; private set; }
+        public int FixedCellCount { get; set; }
         public Dictionary<char, int> CharToValue { get; private set; }
         public Dictionary<int, char> ValueToChar { get; private set; }
 
@@ -61,6 +62,7 @@ namespace Logic
                             {
                                 neighbor.Value = Solver.BitmaskToValue(neighbor.CandidatesMask);
                                 _workStack[++_workPtr] = neighborIndex;
+                                FixedCellCount++;
                             }
                         }
                     }
@@ -153,6 +155,7 @@ namespace Logic
                 NeighborOffsets[i] = neighborPointer;
                 neighborPointer = MapNeighborsToFlatArray(i, neighborPointer);
             }
+            FixedCellCount = _workPtr;
             _workPtr--;
         }
 
